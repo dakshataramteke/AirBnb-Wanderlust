@@ -77,7 +77,8 @@ app.all("*",(req,res,next)=>{
 })
 app.use((err,req,res,next)=>{
     let {statuscode=500, message="Something went wrong"} = err; // De construct
-    res.status(statuscode).send(message);
+    res.status(statuscode).render("error.ejs", {message});
+    // res.status(statuscode).send(message);
 })
 app.listen(port,()=>{
     console.log("Server is listing on port", port);

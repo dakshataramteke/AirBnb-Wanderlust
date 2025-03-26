@@ -9,6 +9,9 @@
 a{
     text-decoration: none;
 }
+.main_container{
+    min-height:calc(80vh - 5rem)
+}
 .navbar-toggler,
 .navbar-toggler:focus{
     box-shadow: none !important;
@@ -35,6 +38,7 @@ a{
 }
 
 /* Footer  */
+
 .f-info-links, .f-info-socials, .f-info-brand{
     width:100%;
     display: flex;
@@ -50,7 +54,7 @@ a{
 .f-info{
     text-align: center;
     display: flex;
-    height:8rem;
+    height:8rem;  
     flex-wrap: wrap;
     justify-content: center;
     align-items: space-evenly;
