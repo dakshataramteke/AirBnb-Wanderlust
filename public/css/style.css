@@ -1,12 +1,22 @@
 :root{
     --black:black;
     --white:white;
-}
+    --primary: #0D6EFD;
+    --red: red;
+    --cornflower: #64A2FF;
 
+}
+a{
+    text-decoration: none;
+}
+.navbar-toggler,
+.navbar-toggler:focus{
+    box-shadow: none !important;
+    border: none !important;;
+}
 .form-control:focus{
     box-shadow: none;
 }
-
 .navbar{
     height:70px;
    
@@ -20,6 +30,76 @@
 }
 
 .navbar .fa-compass{
-    color: red;
+    color: var(--red);
     font-size:28px;
 }
+
+/* Footer  */
+.f-info-links, .f-info-socials, .f-info-brand{
+    width:100%;
+    display: flex;
+    align-items: center;
+    color: var(--white);
+    justify-content: center;
+}
+.f-info-socials i{
+    font-size:1.325rem;
+    color:var(--white);
+    margin-right: 1rem;
+}
+.f-info{
+    text-align: center;
+    display: flex;
+    height:8rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: space-evenly;
+}
+.footer .f-info-links a{
+    color: var(--white) !important;
+    margin-right: 10px;
+}
+.footer .f-info-links a:hover{
+    text-decoration: underline;
+}
+
+/* Index.ejs  */
+.card{
+    border: none;
+    margin-bottom: 2rem;
+}
+.card-img-top{
+    border-radius: .5rem;
+    width: 100%;
+    object-fit:cover;
+}
+
+.card-body{
+    padding: 0;
+}
+.card-img-overlay{  
+    opacity: 0;
+}
+.card-img-overlay:hover{
+    opacity: 0.2;
+    background-color: white;
+}
+
+
+/*
+ Add Listings 
+ */
+
+ .add_listings span{
+ color: var(--red);
+ font-weight: 700;
+ }
+
+ /* Client Side Error  */
+ .form-control.is-invalid:focus, .was-validated .form-control:valid:focus,
+ .form-control.is-invalid:focus, .was-validated .form-control:invalid:focus{
+    box-shadow: none !important;
+ }
+ .form-control.is-valid, .was-validated .form-control:valid{
+    background-image: none !important;
+ }
