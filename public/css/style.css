@@ -68,8 +68,8 @@ a{
 }
 
 /* Index.ejs  */
-.card{
-    border: none;
+.listing-card{
+    border: none !important;
     margin-bottom: 2rem;
 }
 .card-img-top{

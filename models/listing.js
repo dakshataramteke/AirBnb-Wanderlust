@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const Review = require('./review.js');
 
 const listingSchema = new Schema({
   title: {
@@ -25,6 +26,10 @@ default: "https://images.pexels.com/photos/261102/pexels-photo-261102.jpeg?cs=sr
   country: { type: String,
     //  required: true 
     },
+    review:[{
+      type:Schema.Types.ObjectId,
+      ref: "Review"   // Review Model
+    }]
 });
 
 const Listing = mongoose.model("Listing", listingSchema);

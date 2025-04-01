@@ -6,7 +6,8 @@ const ejsMate = require('ejs-mate');
 const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
 const path = require('path');
-const listingSchema = require('./Schema'); //From Joi
+const {listingSchema, reviewSchema} = require('./Schema'); //From Joi
+const Review = require('./models/review.js');
 const app = express();
 const port = 8000;
 
@@ -30,13 +31,24 @@ const validateListing = (req,res,next)=>{
         const msg = error.details.map(el=>el.message).join(",")
         console.log(msg);
         throw new ExpressError(400, msg);
-
     }
     else{
         next();
     }
-
 }
+
+const validateReview = (req,res,next)=>{
+    const {error} = reviewSchema.validate(req.body);
+    if(error){
+        const msg = error.details.map(el=>el.message).join(",")
+        console.log(msg);
+        throw new ExpressError(400, msg);
+    }
+    else{
+        next();
+    }
+}
+
 //Index Route
 app.get("/listings",async(req,res)=>{
    const allListings = await Listing.find({})
@@ -50,19 +62,7 @@ app.get("/listings/new",(req,res)=>{
 
 //Create Route
 app.post("/listings",validateListing, wrapAsync(async(req,res,next)=>{
-    const newListings = new Listing(req.body.listing);
-    // if(!newListings.title){
-    //     throw new ExpressError(400,"title is missing");
-    // }
-    // if(!newListings.description){
-    //     throw new ExpressError(400,"Description is missing");
-    // }
-    // if(!newListings.price){
-    //     throw new ExpressError(400,"price is missing");
-    // }
-    // if(!newListings.location){
-    //     throw new ExpressError(400,"Location is missing");
-    // }
+    const newListings = new Listing(req.body.listing);   
     await newListings.save();
     res.redirect("/listings");
 }))
@@ -74,6 +74,16 @@ app.get("/listings/:id/edit",wrapAsync(async(req,res)=>{
     res.render("listings/edit.ejs", {listing});
 }))
 
+//Review 
+// Post Route
+app.post("/listings/:id/reviews",validateReview, wrapAsync(async(req,res,next)=>{
+  let listing= await Listing.findById(req.params.id);
+    const newReview = new Review(req.body.review);
+     listing.review.push(newReview);
+    await newReview.save();
+    await listing.save()
+    res.redirect(`/listings`);
+}))
 app.put("/listings/:id",validateListing, wrapAsync(async(req,res)=>{
     let {id} = req.params;
     await Listing.findByIdAndUpdate(id,{...req.body.listing});
@@ -86,10 +96,11 @@ app.delete("/listings/:id",wrapAsync(async(req,res)=>{
     let deletedListing = await Listing.findByIdAndDelete(id);
    res.redirect("/listings");
 }))
+
 //Show Route
 app.get("/listings/:id",wrapAsync(async(req,res)=>{
    let {id} = req.params;
-   const listing= await Listing.findById(id);
+   const listing= await Listing.findById(id).populate("review");
    res.render("listings/show.ejs",{listing});
 }))
 
