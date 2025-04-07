@@ -32,6 +32,17 @@ default: "https://images.pexels.com/photos/261102/pexels-photo-261102.jpeg?cs=sr
     }]
 });
 
+
+// Post Middleware
+listingSchema.post("findOneAndDelete",async(listing)=>{
+  if(listing){
+    const res = await Review.deleteMany({ _id: { $in: listing.review } });
+    console.log(res);
+    console.log("Post Middleware for Listing ");
+  }
+
+})
+
 const Listing = mongoose.model("Listing", listingSchema);
 
 module.exports = Listing;
