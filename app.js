@@ -4,10 +4,15 @@ const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const ExpressError = require("./utils/ExpressError.js");
 const path = require('path');
-const listing = require('./routes/listing.js');
-const review = require("./routes/review.js");
+const listingRouter = require('./routes/listing.js');
+const reviewRouter = require("./routes/review.js");
 const session = require("express-session");
 const flash = require("connect-flash");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const User = require("./models/User.js");
+const UserRouter = require("./routes/User.js");
+
 const app = express();
 const port = 8000;
 
@@ -39,15 +44,31 @@ app.get("/", (req,res)=>{
 app.use(session(sessionOptions));
 app.use(flash());
 
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
     res.locals.successMsg = req.flash("success"); 
     res.locals.errorMsg = req.flash("error");// Corrected from req to res
     next();
 });
+
+// app.get("/demouser",async(req,res)=>{
+// let fakeUser = new User({
+//     email:"admin@gmail.com",
+//     username: "delta-students"
+// })
+// let registeredUser = await User.register(fakeUser,"Helloworld");
+// console.log(registeredUser);
+// res.send(registeredUser);
+// })
 // For Router 
-app.use("/listings", listing); // Mounting the router
-app.use("/listings/:id/reviews",review); // Mounting the router)
+app.use("/listings", listingRouter); // Mounting the router
+app.use("/listings/:id/reviews",reviewRouter); // Mounting the router
+app.use("/",UserRouter);
 
 app.all("*",(req,res,next)=>{
     next(new ExpressError(404, "Page not found"));
