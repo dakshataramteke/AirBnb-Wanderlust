@@ -6,20 +6,23 @@
     <div class="container">
       <div class="row">
         <div class="col-12 col-md-10 offset-md-2 my-2">
+          <p class="card-text">Owned by : <b><%= listing.owner.username %></b></p>
           <div class="card listing-card" style="width:70%">
             <img class="card-img-top" src="<%=listing.image%>" alt="Card image cap" style="height:22rem">
             <div class="card-body">
+            
               <p class="card-text"> <%=listing.description %> </p>
               <p class="card-text">&#8377; <%=listing.price %></p>
               <p class="card-text"><%=listing.location %></p>
               <p class="card-text"><%=listing.country %></p>
-             
             </div>
           </div>
+        
           <a href="/listings/<%= listing._id %>/edit" class="btn btn-success">Edit </a>
           <form action="/listings/<%=listing._id%>?_method=DELETE" method="post">
             <button class="mt-2 btn btn-danger">Delete</button>
           </form>
+        
         </div>
        <hr/>
         <div class="row review mt-2">

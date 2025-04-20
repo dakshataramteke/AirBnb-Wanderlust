@@ -29,7 +29,11 @@ default: "https://images.pexels.com/photos/261102/pexels-photo-261102.jpeg?cs=sr
     review:[{
       type:Schema.Types.ObjectId,
       ref: "Review"   // Review Model
-    }]
+    }],
+    owner:{
+      type:Schema.Types.ObjectId,
+      ref:"User"  // User Model
+    }
 });
 
 
