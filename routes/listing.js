@@ -7,7 +7,8 @@ const ExpressError = require("../utils/ExpressError.js");
 const Listing = require("../models/listing.js");
 const {isLoggedIn,isOwner} = require("../middleware.js");
 const {Index, EditListing, NewListing, CreateListing,UpdateListing,DeleteListing,ShowListing} = require("../controllers/listings.js");
-
+const multer  = require('multer');
+const upload = multer({ dest: 'uploads/' })
 // All Listings Data 
 const validateListing = (req,res,next)=>{
     const {error} = listingSchema.validate(req.body);
@@ -23,7 +24,10 @@ const validateListing = (req,res,next)=>{
 //Index Route & //Create Route
 router.route("/")
 .get(Index)
-.post(validateListing, wrapAsync, (CreateListing))
+// .post(validateListing, wrapAsync, (CreateListing))
+.post(upload.single('listing[image]'),(req,res)=>{
+    res.send(req.file);
+})
 
 
 
@@ -35,7 +39,7 @@ router.get("/new", isLoggedIn, NewListing)
 //Edit Route
 router.get("/:id/edit",wrapAsync(EditListing))
 
-// Update Route
+// Update Routes
 router.put("/:id",isLoggedIn, isOwner, validateListing, wrapAsync(async(req,res)=>{
     let {id} = req.params;
     const listing= await Listing.findById(id).populate("review").populate("owner");

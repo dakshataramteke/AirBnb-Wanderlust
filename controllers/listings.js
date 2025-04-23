@@ -26,7 +26,6 @@ const CreateListing = async(req,res,next)=>{
 }
 
 const UpdateListing = async(req,res)=>{
-    
     await Listing.findByIdAndUpdate(id,{...req.body.listing});
     req.flash("success","Listing Updated !");
     res.redirect(`${id}`);
