@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const db = require("./models/db.js");
 const methodOverride = require('method-override');
